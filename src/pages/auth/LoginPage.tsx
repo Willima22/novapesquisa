@@ -33,7 +33,8 @@ const LoginPage: React.FC = () => {
       await signIn(data.email, data.password);
       navigate('/dashboard');
     } catch (err) {
-      setError('Credenciais inválidas. Por favor, tente novamente.');
+      console.error('Erro no login:', err);
+      setError('Não foi possível fazer login. Por favor, verifique suas credenciais e tente novamente.');
     } finally {
       setIsLoading(false);
     }

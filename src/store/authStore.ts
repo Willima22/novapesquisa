@@ -40,7 +40,13 @@ export const useAuthStore = create<AuthState>()(
               .single();
               
             if (userError) {
-              set({ error: userError.message, isLoading: false });
+              console.error('Erro ao buscar perfil do usuário:', userError);
+              set({ error: 'Erro ao buscar perfil do usuário. Por favor, tente novamente.', isLoading: false });
+              return;
+            }
+            
+            if (!userData) {
+              set({ error: 'Usuário não encontrado no banco de dados.', isLoading: false });
               return;
             }
             
@@ -49,9 +55,12 @@ export const useAuthStore = create<AuthState>()(
               isAuthenticated: true, 
               isLoading: false 
             });
+          } else {
+            set({ error: 'Usuário não encontrado.', isLoading: false });
           }
         } catch (err) {
-          set({ error: 'An unexpected error occurred', isLoading: false });
+          console.error('Erro inesperado no login:', err);
+          set({ error: 'Ocorreu um erro inesperado. Por favor, tente novamente.', isLoading: false });
         }
       },
       
